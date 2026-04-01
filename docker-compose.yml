@@ -1,0 +1,24 @@
+services:
+  builder:
+    build:
+      context: .
+    image: openwrt-build:24.04
+    mem_limit: 8g
+    cpus: 6       # Hard limit for the number of CPU shares available across all CPU’s.
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./config:/config
+      - ./workspace:/workspace
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    user: "${UID:-1000}:${GID:-1000}"
+    command: [ "bash", "-lc", "sleep infinity" ]
+    networks:
+      macvlan01:
+        ipv4_address: 192.168.1.193
+
+networks:
+  macvlan01:
+    external: true
